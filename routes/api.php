@@ -2,17 +2,16 @@
 
 use App\Models\Author;
 use App\Models\Citation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| Routes d'API
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| Ici, vous pouvez enregistrer les routes d'API pour votre application. Ces
+| routes sont chargées par RouteServiceProvider et toutes seront
+| attribuées au groupe de middleware "api". Faites quelque chose de génial !
 |
 */
 
@@ -26,15 +25,19 @@ use Illuminate\Support\Facades\Route;
 // Route::get('citation/{id}', function ($id) {
 //     return response(Citation::find($id), 200);
 // });
+
+// Route pour obtenir toutes les citations avec leur auteur respectif.
 Route::get('citation', function () {
+    // 'with' permet de charger la relation 'author' en une seule fois pour éviter le problème N+1
     return response(Citation::with('author')->get(), 200);
 });
-Route::get('citation/{id}', function ($id) {
-    return response(Citation::with('author')->find($id), 200);
-});
+
+// Route pour obtenir tous les auteurs.
 Route::get('author', function () {
     return response(Author::all(),200);
 });
+
+// Route pour obtenir un auteur spécifique en fonction de son 'id'.
 Route::get('author/{id}', function ($id) {
-    return response(Author::find($id), 200);
+    return response(Citation::where('author_id', $id)->get(), 200);
 });
