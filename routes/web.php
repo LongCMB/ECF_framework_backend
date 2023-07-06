@@ -35,11 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::get('/user', function () {
-    return 'hello';
-})->name('user.index');
-
-Route::prefix('/user')->name('user.')->controller(AuthController::class)->group(function () {
+Route::prefix('/user')->name('user.')->controller(AuthController::class)->middleware('admin')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');
     Route::post('/store', 'store')->name('store');
